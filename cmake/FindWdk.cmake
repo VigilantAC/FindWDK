@@ -155,12 +155,12 @@ function(wdk_add_driver _target)
         "${WDK_ROOT}/Include/${WDK_INC_VERSION}/km/crt"
         )
 
-    target_link_libraries(${_target} WDK::NTOSKRNL WDK::HAL WDK::BUFFEROVERFLOWK WDK::WMILIB)
+    target_link_libraries(${_target} WDK::NTOSKRNL WDK::HAL WDK::WMILIB)
 
     if(CMAKE_SIZEOF_VOID_P EQUAL 4)
         target_link_libraries(${_target} WDK::MEMCMP)
     endif()
-
+    #[===[
     if(DEFINED WDK_KMDF)
         target_include_directories(${_target} SYSTEM PRIVATE "${WDK_ROOT}/Include/wdf/kmdf/${WDK_KMDF}")
         target_link_libraries(${_target}
@@ -180,6 +180,8 @@ function(wdk_add_driver _target)
             set_property(TARGET ${_target} APPEND_STRING PROPERTY LINK_FLAGS "/ENTRY:GsDriverEntry")
         endif()
     endif()
+    ]===]
+    set_property(TARGET ${_target} APPEND_STRING PROPERTY LINK_FLAGS "/ENTRY:DriverEntry")
 endfunction()
 
 function(wdk_add_library _target)
